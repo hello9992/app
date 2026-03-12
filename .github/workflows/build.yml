@@ -17,13 +17,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: 下载Gradle Wrapper
+      - name: 安装Gradle
         run: |
-          mkdir -p gradle/wrapper
-          curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.jar
+          wget https://services.gradle.org/distributions/gradle-8.0-bin.zip
+          unzip -q gradle-8.0-bin.zip
+          echo "$PWD/gradle-8.0/bin" >> $GITHUB_PATH
 
-      - name: 授予执行权限
-        run: chmod +x gradlew
+      - name: 初始化Gradle Wrapper
+        run: gradle wrapper
 
       - name: 构建APK
         run: ./gradlew assembleDebug
