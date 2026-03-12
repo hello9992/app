@@ -1,4 +1,4 @@
-name:构建Android APK
+name: 构建Android APK
 
 on:
   push:
@@ -8,11 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./app
-    
-    steps:- uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
       - name: 设置JDK
         uses: actions/setup-java@v4
@@ -21,15 +18,18 @@ jobs:
           distribution: 'temurin'
 
       - name: 安装Gradle
+        working-directory: ./app
         run: |
           wget https://services.gradle.org/distributions/gradle-8.0-bin.zip
           unzip -q gradle-8.0-bin.zip
           echo "$PWD/gradle-8.0/bin" >> $GITHUB_PATH
 
       - name: 初始化Gradle Wrapper
+        working-directory: ./app
         run: gradle wrapper
 
       - name: 构建APK
+        working-directory: ./app
         run: ./gradlew assembleDebug
 
       - name: 上传APK
