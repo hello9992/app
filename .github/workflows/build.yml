@@ -10,15 +10,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: 设置JDK
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: 下载Gradle Wrapper
+        run: |
+          mkdir -p gradle/wrapper
+          curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/master/gradle/wrapper/gradle-wrapper.jar
+
       - name: 授予执行权限
         run: chmod +x gradlew
+
       - name: 构建APK
         run: ./gradlew assembleDebug
+
       - name: 上传APK
         uses: actions/upload-artifact@v3
         with:
